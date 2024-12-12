@@ -1,5 +1,6 @@
 package champollion;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.lang.Math ;
@@ -11,12 +12,13 @@ import java.util.Map;
  */
 public class Enseignant extends Personne {
 
-    // TODO : rajouter les autres méthodes présentes dans le diagramme UML
 
-    Map<UE,ServicePrevu> listeHeure = new HashMap();
+    Map<UE,ServicePrevu> listeHeure;
+    Map<UE,Intervention> listeIntervention;
 
     public Enseignant(String nom, String email) {
         super(nom, email);
+        this.listeHeure = new HashMap<>();
     }
 
     /**
@@ -31,7 +33,7 @@ public class Enseignant extends Personne {
 
         double total=0.0 ;
         for(ServicePrevu s : listeHeure.values() ) {
-            total = (s.volumeCM*1.5) + (s.volumeTD) + (s.volumeTP*0.75) ;
+            total = total + (s.volumeCM*1.5) + (s.volumeTD) + (s.volumeTP*0.75) ;
         }
 
         return (int) Math.round(total);
@@ -49,9 +51,10 @@ public class Enseignant extends Personne {
     public int heuresPrevuesPourUE(UE ue) {
 
         double total = 0.0;
-        total = listeHeure.get(ue).volumeCM*1.5 + listeHeure.get(ue).volumeTD + listeHeure.get(ue).volumeTP*0.75 ;
+        if(listeHeure.containsKey(ue)) {
+            total = listeHeure.get(ue).volumeCM * 1.5 + listeHeure.get(ue).volumeTD + listeHeure.get(ue).volumeTP * 0.75;
+        }
         return (int) Math.round(total);
-
     }
 
   /**
@@ -73,4 +76,10 @@ public class Enseignant extends Personne {
         }
     }
 
+
+    public void ajouteIntervention(Intervention i) throws ExceptionServiceDepasse{
+        if(listeIntervention.containsKey(i.ue)) {
+
+        }
+    }
 }
