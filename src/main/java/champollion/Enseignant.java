@@ -1,5 +1,10 @@
 package champollion;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.lang.Math ;
+import java.util.Map;
+
 /**
  * Un enseignant est caractérisé par les informations suivantes : son nom, son adresse email, et son service prévu,
  * et son emploi du temps.
@@ -7,6 +12,8 @@ package champollion;
 public class Enseignant extends Personne {
 
     // TODO : rajouter les autres méthodes présentes dans le diagramme UML
+
+    Map<UE,ServicePrevu> listeHeure = new HashMap();
 
     public Enseignant(String nom, String email) {
         super(nom, email);
@@ -21,8 +28,13 @@ public class Enseignant extends Personne {
      *
      */
     public int heuresPrevues() {
-        // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+
+        double total=0.0 ;
+        for(ServicePrevu s : listeHeure.values() ) {
+            total = (s.volumeCM*1.5) + (s.volumeTD) + (s.volumeTP*0.75) ;
+        }
+
+        return (int) Math.round(total);
     }
 
     /**
@@ -35,21 +47,30 @@ public class Enseignant extends Personne {
      *
      */
     public int heuresPrevuesPourUE(UE ue) {
-        // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+
+        double total = 0.0;
+        total = listeHeure.get(ue).volumeCM*1.5 + listeHeure.get(ue).volumeTD + listeHeure.get(ue).volumeTP*0.75 ;
+        return (int) Math.round(total);
+
     }
 
-    /**
+  /**
      * Ajoute un enseignement au service prévu pour cet enseignant
      *
      * @param ue l'UE concernée
      * @param volumeCM le volume d'heures de cours magistral
-     * @param volumeTD le volume d'heures de TD
+     * @param volumeTD le volume d'heures de T
      * @param volumeTP le volume d'heures de TP
      */
-    public void ajouteEnseignement(UE ue, int volumeCM, int volumeTD, int volumeTP) {
-        // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+    public void ajouteEnseignement(UE ue, double volumeCM, double volumeTD, double volumeTP) {
+        if(listeHeure.containsKey(ue)) {
+            listeHeure.get(ue).volumeTP += volumeTP;
+            listeHeure.get(ue).volumeTD += volumeTD;
+            listeHeure.get(ue).volumeCM += volumeCM;
+        }
+        else {
+            this.listeHeure.put(ue, new ServicePrevu(volumeCM, volumeTD, volumeTP));
+        }
     }
 
 }
